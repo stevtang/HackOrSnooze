@@ -47,6 +47,6 @@ function putStoriesOnPage() {
     const $story = generateStoryMarkup(story);
     $allStoriesList.append($story);
   }
-
+  
   $allStoriesList.show();
 }

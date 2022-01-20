@@ -46,7 +46,9 @@ a:hover {
 
 
 /* Forms */
-
+#add-new-story-form {
+  display: none;
+}
 form {
   display: flex;
   flex-direction: column;

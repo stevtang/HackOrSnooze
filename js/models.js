@@ -76,8 +76,8 @@ class StoryList {
 
   async addStory( user, newStory ) {
     // UNIMPLEMENTED: complete this function!
-    const newStoryInstance = new Story(newStory);
-
+    
+    // ??: Do we need "response"?
     const response = await axios({
       url: `${BASE_URL}/stories`,
       method: "POST",
@@ -89,7 +89,11 @@ class StoryList {
           url: newStory.url
         }}
     });
-    return response;
+    
+    const newStoryInstance = new Story(newStory);
+    storyList.stories.push(newStoryInstance);
+    
+    return newStoryInstance;
   }
 }
 
