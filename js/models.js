@@ -76,7 +76,7 @@ class StoryList {
 
   async addStory( user, newStory ) {
     // UNIMPLEMENTED: complete this function!
-    
+
     // ??: Do we need "response"?
     const response = await axios({
       url: `${BASE_URL}/stories`,
@@ -84,15 +84,17 @@ class StoryList {
       data: { 
         token: user.loginToken,
         story: {
-          author: newStory.author, //FIX - Check if this comes from user in argument or newStoryInstace
-          title: newStory.title,
-          url: newStory.url
+          author: newStory.story.author, //FIX - Check if this comes from user in argument or newStoryInstace
+          title: newStory.story.title,
+          url: newStory.story.url
         }}
     });
     
-    const newStoryInstance = new Story(newStory);
+    console.log(response);
+
+    const newStoryInstance = new Story(response.data.story);
     storyList.stories.push(newStoryInstance);
-    
+
     return newStoryInstance;
   }
 }

@@ -36,6 +36,8 @@
 <nav>
   <div class="navbar-brand">
     <a class="nav-link" href="#" id="nav-all">Hack or Snooze</a>
+    | <!-- TODO Fix this. Should be inside some sort of tag-->    
+    <a id="nav-story-submit" href="#">Submit</a>
   </div>
   <div class="nav-right">
     <a class="nav-link" href="#" id="nav-login">login/signup</a>
@@ -49,17 +51,17 @@
   <form id = "add-new-story-form">
   <div>
     <label>Author:</label>
-    <input class = "author-input" type = "text"></input>
+    <input id = "author-input" type = "text"></input>
   </div>
   <div>
   <label>Title:</label>
-    <input class = "title-input" type = "text"></input>
+    <input id = "title-input" type = "text"></input>
 </div>
 <div>
   <label>URL:</label> 
-    <input class = "url-input" type = "text"></input>
+    <input id = "url-input" type = "text"></input>
 </div>
-<button type = "submit">Submit</button>
+<button type = "submit" id = "add-new-story-button">Submit</button>
 <hr>
   </form>
   <!-- loading message (removed by JS after stories loaded) -->
