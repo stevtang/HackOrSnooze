@@ -39,15 +39,32 @@ function generateStoryMarkup(story) {
 
 /** Gets list of stories from server, generates their HTML, and puts on page. */
 
-function putStoriesOnPage() {
+async function putStoriesOnPage() {
   console.debug("putStoriesOnPage");
 
   $allStoriesList.empty();
 
+  const userFavorites = await User.getFavorites();
+  const userFavoriteObj = {};
+
+  for (let i of userFavorites.stories) {
+    userFavoriteObj[i.storyId] = null;
+  }
+  console.log("userFavoriteObj", userFavoriteObj);
+
   // loop through all of our stories and generate HTML for them
   for (let story of storyList.stories) {
     const $story = generateStoryMarkup(story);
+
+    console.log($story);
+
     $allStoriesList.append($story);
+
+    if (story.storyId in userFavoriteObj) {
+      $(`#star-${story.storyId}`).toggleClass("fas");
+      console.log("story.storyId", story.storyId);
+    }
+
   }
 
   $allStoriesList.show();
@@ -88,7 +105,7 @@ function favoriteToggle(evt) {
   const closestParent = $(evt.target).closest("li");
   const closestParentId = closestParent[0].id;
 
-  for (let i of storyList.stories){
+  for (let i of storyList.stories) {
     if (closestParentId === i.storyId) {
       favoriteStory = i;
       console.log("story from loop, ", favoriteStory);
