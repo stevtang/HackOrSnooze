@@ -98,7 +98,7 @@ function favoriteToggle(evt) {
   if ($(`#star-${favoriteStory.storyId}`).hasClass("favorite")) {
     currentUser.unfavorite(favoriteStory);
   } else {
-    currentUser.favorite(favoriteStory);
+    currentUser.addFavorite(favoriteStory);
 
   };
 }
