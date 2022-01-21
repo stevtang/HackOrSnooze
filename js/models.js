@@ -1,7 +1,6 @@
 "use strict";
 
 const BASE_URL = "https://hack-or-snooze-v3.herokuapp.com";
-const AUTH_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InJ5YW50ZXN0IiwiaWF0IjoxNjQyNzAyNDQ4fQ.h2yDtlo94evUjJEWX-HfDxODWStUAmSyg7bf1_Hre08"
 
 /******************************************************************************
  * Story: a single story in the system
@@ -25,8 +24,8 @@ class Story {
   /** Parses hostname out of URL and returns it. */
 
   getHostName() {
-    // UNIMPLEMENTED: complete this function!
-    return "hostname.com";
+    let domain = (new URL(this.url));
+    return domain.hostname.replace('www.', '');;
   }
 }
 
@@ -74,22 +73,22 @@ class StoryList {
    * Returns the new Story instance
    */
 
-  async addStory( user, newStory ) {
+  async addStory(user, newStory) {
     // UNIMPLEMENTED: complete this function!
 
-    // ??: Do we need "response"?
     const response = await axios({
       url: `${BASE_URL}/stories`,
       method: "POST",
-      data: { 
+      data: {
         token: user.loginToken,
         story: {
-          author: newStory.story.author, //FIX - Check if this comes from user in argument or newStoryInstace
+          author: newStory.story.author,
           title: newStory.story.title,
           url: newStory.story.url
-        }}
+        }
+      }
     });
-    
+
     console.log(response);
 
     const newStoryInstance = new Story(response.data.story);
@@ -111,13 +110,13 @@ class User {
    */
 
   constructor({
-                username,
-                name,
-                createdAt,
-                favorites = [],
-                ownStories = []
-              },
-              token) {
+    username,
+    name,
+    createdAt,
+    favorites = [],
+    ownStories = []
+  },
+    token) {
     this.username = username;
     this.name = name;
     this.createdAt = createdAt;

@@ -21,7 +21,7 @@ async function getAndShowStoriesOnStart() {
 
 function generateStoryMarkup(story) {
   // console.debug("generateStoryMarkup", story);
-
+  console.log("story", story);
   const hostName = story.getHostName();
   return $(`
       <li id="${story.storyId}">
@@ -47,13 +47,13 @@ function putStoriesOnPage() {
     const $story = generateStoryMarkup(story);
     $allStoriesList.append($story);
   }
-  
+
   $allStoriesList.show();
 }
 
 /** Gets form values, calls addStory method, prepends to the $allStoriesList */
 
-async function getStoryValueAndUpdateStoryList(){
+async function getStoryValueAndUpdateStoryList() {
   const authorInput = $("#author-input").val();
   const titleInput = $("#title-input").val();
   const urlInput = $("#url-input").val();
@@ -61,16 +61,17 @@ async function getStoryValueAndUpdateStoryList(){
   const newStory = {
     'token': currentUser.loginToken,
     'story': {
-    'author': authorInput,
-    'title': titleInput,
-    'url': urlInput
-  }};
+      'author': authorInput,
+      'title': titleInput,
+      'url': urlInput
+    }
+  };
 
-  const something = await storyList.addStory(currentUser, newStory);
+  const newStoryPost = await storyList.addStory(currentUser, newStory);
 
-  const jqueryStory = generateStoryMarkup(something);
+  const $jqueryStory = generateStoryMarkup(newStoryPost);
 
-  $allStoriesList.prepend(jqueryStory);
-} 
+  $allStoriesList.prepend($jqueryStory);
+}
 
 $("#add-new-story-button").on("click", getStoryValueAndUpdateStoryList);
