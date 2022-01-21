@@ -21,10 +21,12 @@ async function getAndShowStoriesOnStart() {
 
 function generateStoryMarkup(story) {
   // console.debug("generateStoryMarkup", story);
-  console.log("story", story);
+  // console.log("story", story);
   const hostName = story.getHostName();
   return $(`
+  
       <li id="${story.storyId}">
+      <span id="star-${story.storyId}" class="far fa-star"></span>
         <a href="${story.url}" target="a_blank" class="story-link">
           ${story.title}
         </a>
@@ -53,7 +55,8 @@ function putStoriesOnPage() {
 
 /** Gets form values, calls addStory method, prepends to the $allStoriesList */
 
-async function getStoryValueAndUpdateStoryList() { //subnitNewStory
+async function getStoryValueAndUpdateStoryList() {
+  //subnitNewStory
   //input sounds like the HTML element, can remove
   const authorInput = $("#author-input").val();
   const titleInput = $("#title-input").val();
@@ -62,13 +65,13 @@ async function getStoryValueAndUpdateStoryList() { //subnitNewStory
   //remove quotes, not necessary
   // should just be passing {authoer, title, url}
   const newStory = {
-    'token': currentUser.loginToken,
-    'story': {
+    token: currentUser.loginToken,
+    story: {
       //can use object shorthand if we fix const variables above
-      'author': authorInput,
-      'title': titleInput,
-      'url': urlInput
-    }
+      author: authorInput,
+      title: titleInput,
+      url: urlInput,
+    },
   };
 
   const newStoryPost = await storyList.addStory(currentUser, newStory);
@@ -77,5 +80,15 @@ async function getStoryValueAndUpdateStoryList() { //subnitNewStory
 
   $allStoriesList.prepend($jqueryStory);
 }
+function favoriteToggle() {
+  console.log("clicked");
+  if ($(`#star-${story.storyId}`).hasClass("favorite")) {
+    unfavorite();
+  } else {
+    favorite();
+  };
+}
 //add event to the form itself and listen for a submit. will not detect hitting enter key.
 $("#add-new-story-button").on("click", getStoryValueAndUpdateStoryList);
+$("#all-stories-list").on("click", `#star-${this.storyId}`, favoriteToggle);
+// $(`#star-${this.storyId}`).on("click",  favoriteToggle);

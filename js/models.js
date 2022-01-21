@@ -139,6 +139,8 @@ class User {
       data: {token: currentUser.loginToken}
     })
     console.log("response: ", response);
+    $(`#star-${story.storyId}`).toggleClass("favorite");
+    
   }
   async unfavorite(story){
     // delete story from this.favorites array
@@ -148,6 +150,7 @@ class User {
       data: {token: currentUser.loginToken}
     })
     console.log("response in unfavorite:", response);
+    $(`#star-${story.storyId}`).toggleClass("favorite");
   }
 
   /** Register new user in API, make User instance & return it.
