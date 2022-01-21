@@ -140,7 +140,8 @@ class User {
     })
     console.log("response: ", response);
     $(`#star-${story.storyId}`).toggleClass("favorite");
-    
+    $(`#star-${story.storyId}`).toggleClass("fas");
+    console.log("item has been favorited");
   }
   async unfavorite(story){
     // delete story from this.favorites array
@@ -151,6 +152,8 @@ class User {
     })
     console.log("response in unfavorite:", response);
     $(`#star-${story.storyId}`).toggleClass("favorite");
+    $(`#star-${story.storyId}`).toggleClass("fas");
+    console.log("item has been UNfavorited");
   }
 
   /** Register new user in API, make User instance & return it.

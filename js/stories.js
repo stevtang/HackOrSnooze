@@ -26,7 +26,7 @@ function generateStoryMarkup(story) {
   return $(`
   
       <li id="${story.storyId}">
-      <span id="star-${story.storyId}" class="far fa-star"></span>
+      <i id="star-${story.storyId}" class="far fa-star"></i>
         <a href="${story.url}" target="a_blank" class="story-link">
           ${story.title}
         </a>
@@ -80,15 +80,31 @@ async function getStoryValueAndUpdateStoryList() {
 
   $allStoriesList.prepend($jqueryStory);
 }
-function favoriteToggle() {
-  console.log("clicked");
-  if ($(`#star-${story.storyId}`).hasClass("favorite")) {
-    unfavorite();
+
+function favoriteToggle(evt) {
+
+  let favoriteStory;
+
+  const closestParent = $(evt.target).closest("li");
+  const closestParentId = closestParent[0].id;
+
+  for (let i of storyList.stories){
+    if (closestParentId === i.storyId) {
+      favoriteStory = i;
+      console.log("story from loop, ", favoriteStory);
+    }
+  }
+
+  if ($(`#star-${favoriteStory.storyId}`).hasClass("favorite")) {
+    currentUser.unfavorite(favoriteStory);
   } else {
-    favorite();
+    currentUser.favorite(favoriteStory);
+
   };
 }
 //add event to the form itself and listen for a submit. will not detect hitting enter key.
 $("#add-new-story-button").on("click", getStoryValueAndUpdateStoryList);
-$("#all-stories-list").on("click", `#star-${this.storyId}`, favoriteToggle);
+
+$("#all-stories-list").on("click", ".fa-star", favoriteToggle);
+
 // $(`#star-${this.storyId}`).on("click",  favoriteToggle);
