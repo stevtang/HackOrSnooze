@@ -94,7 +94,7 @@ class StoryList {
 
     const newStoryInstance = new Story(response.data.story);
     //code review - should be this.stories
-    storyList.stories.push(newStoryInstance);
+    this.stories.push(newStoryInstance);
 
     return newStoryInstance;
   }
@@ -129,6 +129,25 @@ class User {
 
     // store the login token on the user so it's easy to find for API calls.
     this.loginToken = token;
+  }
+  /** add story to favorite array, post favorited story */
+  async favorite(story) {
+    // this.favorites.push(story);
+    const response = await axios ({
+      url: `${BASE_URL}/users/${currentUser.username}/favorites/${story.storyId}`,
+      method: "POST",
+      data: {token: currentUser.loginToken}
+    })
+    console.log("response: ", response);
+  }
+  async unfavorite(story){
+    // delete story from this.favorites array
+    const response = await axios ({
+      url: `${BASE_URL}/users/${currentUser.username}/favorites/${story.storyId}`,
+      method: "DELETE",
+      data: {token: currentUser.loginToken}
+    })
+    console.log("response in unfavorite:", response);
   }
 
   /** Register new user in API, make User instance & return it.
