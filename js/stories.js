@@ -53,14 +53,18 @@ function putStoriesOnPage() {
 
 /** Gets form values, calls addStory method, prepends to the $allStoriesList */
 
-async function getStoryValueAndUpdateStoryList() {
+async function getStoryValueAndUpdateStoryList() { //subnitNewStory
+  //input sounds like the HTML element, can remove
   const authorInput = $("#author-input").val();
   const titleInput = $("#title-input").val();
   const urlInput = $("#url-input").val();
 
+  //remove quotes, not necessary
+  // should just be passing {authoer, title, url}
   const newStory = {
     'token': currentUser.loginToken,
     'story': {
+      //can use object shorthand if we fix const variables above
       'author': authorInput,
       'title': titleInput,
       'url': urlInput
@@ -73,5 +77,5 @@ async function getStoryValueAndUpdateStoryList() {
 
   $allStoriesList.prepend($jqueryStory);
 }
-
+//add event to the form itself and listen for a submit. will not detect hitting enter key.
 $("#add-new-story-button").on("click", getStoryValueAndUpdateStoryList);

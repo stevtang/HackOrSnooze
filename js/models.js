@@ -22,7 +22,7 @@ class Story {
   }
 
   /** Parses hostname out of URL and returns it. */
-
+  //code review - check for .host property
   getHostName() {
     let domain = (new URL(this.url));
     return domain.hostname.replace('www.', '');;
@@ -74,7 +74,7 @@ class StoryList {
    */
 
   async addStory(user, newStory) {
-    // UNIMPLEMENTED: complete this function!
+    //code review - destructure { author, title, url }
 
     const response = await axios({
       url: `${BASE_URL}/stories`,
@@ -82,6 +82,7 @@ class StoryList {
       data: {
         token: user.loginToken,
         story: {
+          //can use obj shorthand here if we destructure
           author: newStory.story.author,
           title: newStory.story.title,
           url: newStory.story.url
@@ -92,6 +93,7 @@ class StoryList {
     console.log(response);
 
     const newStoryInstance = new Story(response.data.story);
+    //code review - should be this.stories
     storyList.stories.push(newStoryInstance);
 
     return newStoryInstance;
