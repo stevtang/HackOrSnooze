@@ -144,7 +144,6 @@ class User {
       method: "POST",
       data: { token: currentUser.loginToken },
     });
-    console.log("response: ", response);
     $(`#star-${story.storyId}`).toggleClass("favorite");
     $(`#star-${story.storyId}`).toggleClass("fas");
     console.log("item has been favorited");
@@ -157,7 +156,6 @@ class User {
       method: "DELETE",
       data: { token: currentUser.loginToken },
     });
-    console.log("response in unfavorite:", response);
     $(`#star-${story.storyId}`).toggleClass("favorite");
     $(`#star-${story.storyId}`).toggleClass("fas");
     console.log("item has been UNfavorited");

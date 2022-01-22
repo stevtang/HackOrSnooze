@@ -47,22 +47,18 @@ async function putStoriesOnPage() {
   const userFavorites = await User.getFavorites();
   const userFavoriteObj = {};
 
-  for (let i of userFavorites.stories) {
-    userFavoriteObj[i.storyId] = null;
+  for (let story of userFavorites.stories) {
+    userFavoriteObj[story.storyId] = null;
   }
-  console.log("userFavoriteObj", userFavoriteObj);
 
   // loop through all of our stories and generate HTML for them
   for (let story of storyList.stories) {
     const $story = generateStoryMarkup(story);
 
-    console.log($story);
-
     $allStoriesList.append($story);
 
     if (story.storyId in userFavoriteObj) {
       $(`#star-${story.storyId}`).toggleClass("fas");
-      console.log("story.storyId", story.storyId);
     }
 
   }
@@ -108,7 +104,6 @@ function favoriteToggle(evt) {
   for (let i of storyList.stories) {
     if (closestParentId === i.storyId) {
       favoriteStory = i;
-      console.log("story from loop, ", favoriteStory);
     }
   }
 

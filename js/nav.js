@@ -53,3 +53,4 @@ async function showFavoritesPage(){
 }
 $("#nav-story-submit").on("click", showSubmitForm);
 $("#user-favorites").on("click", showFavoritesPage);
+$("#nav-all").on("click", start);
