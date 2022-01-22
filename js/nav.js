@@ -41,16 +41,20 @@ function showSubmitForm(evt) {
   console.debug("showSubmitForm", evt);
   $addStoryForm.show();
 }
+
+$("#nav-story-submit").on("click", showSubmitForm);
+
 /** Retrieve favorites from API for logged in user
  * update and show favorites on page
  */
 
-async function showFavoritesPage(){
-  
+async function showFavoritesPage() {
+
   storyList = await User.getFavorites();
-  
+
   putStoriesOnPage();
 }
-$("#nav-story-submit").on("click", showSubmitForm);
+
 $("#user-favorites").on("click", showFavoritesPage);
+
 $("#nav-all").on("click", start);

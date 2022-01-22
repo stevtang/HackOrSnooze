@@ -47,18 +47,22 @@ async function putStoriesOnPage() {
   const userFavorites = await User.getFavorites();
   const userFavoriteObj = {};
 
+  //Creates object of user favorited stories with storyId as key and value as null
   for (let story of userFavorites.stories) {
     userFavoriteObj[story.storyId] = null;
   }
 
-  // loop through all of our stories and generate HTML for them
+  /**Calls functino to generate html markup, appends to allStoriesList element. 
+   * Check if StoryId is in previously created object of favorite stories and
+   * toggles fas class if so.
+  */
   for (let story of storyList.stories) {
     const $story = generateStoryMarkup(story);
 
     $allStoriesList.append($story);
 
     if (story.storyId in userFavoriteObj) {
-      $(`#star-${story.storyId}`).toggleClass("fas");
+      $(`#star-${story.storyId}`).toggleClass("fas favorite");
     }
 
   }
@@ -71,9 +75,9 @@ async function putStoriesOnPage() {
 async function getStoryValueAndUpdateStoryList() {
   //subnitNewStory
   //input sounds like the HTML element, can remove
-  const authorInput = $("#author-input").val();
-  const titleInput = $("#title-input").val();
-  const urlInput = $("#url-input").val();
+  const author = $("#author-input").val();
+  const title = $("#title-input").val();
+  const url = $("#url-input").val();
 
   //remove quotes, not necessary
   // should just be passing {authoer, title, url}
@@ -81,9 +85,9 @@ async function getStoryValueAndUpdateStoryList() {
     token: currentUser.loginToken,
     story: {
       //can use object shorthand if we fix const variables above
-      author: authorInput,
-      title: titleInput,
-      url: urlInput,
+      author,
+      title,
+      url,
     },
   };
 
@@ -94,6 +98,13 @@ async function getStoryValueAndUpdateStoryList() {
   $allStoriesList.prepend($jqueryStory);
 }
 
+//Code Review Thursday - add event to the form itself and listen for a submit. will not detect hitting enter key.
+$("#add-new-story-form").on("submit", getStoryValueAndUpdateStoryList);
+
+/** Checking the closest li element of clicked star for storyId. Toggles
+ * the class of the element that has the same storyId.
+ */
+
 function favoriteToggle(evt) {
 
   let favoriteStory;
@@ -101,22 +112,22 @@ function favoriteToggle(evt) {
   const closestParent = $(evt.target).closest("li");
   const closestParentId = closestParent[0].id;
 
-  for (let i of storyList.stories) {
-    if (closestParentId === i.storyId) {
-      favoriteStory = i;
+  /** Loop may not be necessary. Can probably just grab the parent
+   * without comparing storyId's.
+   */
+  for (let story of storyList.stories) {
+    if (closestParentId === story.storyId) {
+      favoriteStory = story;
     }
   }
 
   if ($(`#star-${favoriteStory.storyId}`).hasClass("favorite")) {
     currentUser.unfavorite(favoriteStory);
+    $(`#star-${favoriteStory.storyId}`).toggleClass("fas favorite");
   } else {
     currentUser.addFavorite(favoriteStory);
-
+    $(`#star-${favoriteStory.storyId}`).toggleClass("fas favorite");
   };
 }
-//add event to the form itself and listen for a submit. will not detect hitting enter key.
-$("#add-new-story-button").on("click", getStoryValueAndUpdateStoryList);
 
 $("#all-stories-list").on("click", ".fa-star", favoriteToggle);
-
-// $(`#star-${this.storyId}`).on("click",  favoriteToggle);

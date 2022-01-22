@@ -21,7 +21,7 @@ class Story {
   }
 
   /** Parses hostname out of URL and returns it. */
-  //code review - check for .host property
+  //Thursday Code Review - Tried .host but it gives us www.hostname.com
   getHostName() {
     let domain = new URL(this.url);
     return domain.hostname.replace("www.", "");
@@ -91,7 +91,7 @@ class StoryList {
     console.log(response);
 
     const newStoryInstance = new Story(response.data.story);
-    //code review - should be this.stories
+
     this.stories.push(newStoryInstance);
 
     return newStoryInstance;
@@ -124,19 +124,25 @@ class User {
     this.loginToken = token;
   }
 
+  /** Calling hack or snooze API with get request. Mapping favorite 
+   * stories of current user. Returning Object (StoryList class) of 
+   * favorite stories */
+
   static async getFavorites() {
     const response = await axios({
       url: `${BASE_URL}/users/${currentUser.username}`,
       method: "GET",
       params: { token: currentUser.loginToken },
     });
-    
+
     const stories = response.data.user.favorites.map((story) => new Story(story));
 
     return new StoryList(stories);
   }
 
-  /** add story to favorite array, post favorited story */
+  /** Call hack or snooze API with POST request when user presses star
+   *  to favorite story. POSTing user favorite story. */
+
   async addFavorite(story) {
     // this.favorites.push(story);
     const response = await axios({
@@ -144,10 +150,12 @@ class User {
       method: "POST",
       data: { token: currentUser.loginToken },
     });
-    $(`#star-${story.storyId}`).toggleClass("favorite");
-    $(`#star-${story.storyId}`).toggleClass("fas");
     console.log("item has been favorited");
   }
+
+  /** Call hack or snooze API request DELETE when user presses star to unfavorite 
+   * story. DELETEs selected favorite user story.
+   */
 
   async unfavorite(story) {
     // delete story from this.favorites array
@@ -156,8 +164,6 @@ class User {
       method: "DELETE",
       data: { token: currentUser.loginToken },
     });
-    $(`#star-${story.storyId}`).toggleClass("favorite");
-    $(`#star-${story.storyId}`).toggleClass("fas");
     console.log("item has been UNfavorited");
   }
 
